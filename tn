@@ -1,0 +1,9 @@
+#!/bin/bash -x
+topic=$1
+date=$(date)
+filename="$HOME/Desktop/${topic}-notes.txt"
+
+read -rp "Your note: " note
+
+echo "$date: $note" >>"$filename"
+echo "Note '$note' saved to $filename"

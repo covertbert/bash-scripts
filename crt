@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [[ ! $1 ]]; then
+    echo "Script requires a name"
+    exit 1
+fi
+
+scriptName=$1
+binDir="$HOME/.local/bin"
+fileName="$binDir/$scriptName"
+
+if [[ -e $fileName ]]; then
+    echo "File $fileName already exists"
+    exit 1
+fi
+
+if type "$scriptName"; then
+    echo "Script $scriptName already exists"
+    exit 1
+fi
+
+if [[ ! -d $binDir ]]; then
+    if mkdir "$binDir"; then
+        echo "Created $binDir"
+    else
+        echo "Could not create $binDir"
+        exit 1
+    fi
+fi
+
+echo "#!/bin/bash" >>"$fileName"
+chmod u+x "$fileName"
+
+if type code; then
+    code "$fileName"
+elif [[ $EDITOR ]]; then
+    $EDITOR "$fileName"
+else
+    echo "Script was created at $fileName but but VSCode is not installed and \$EDITOR is not set so cannot open automatically."
+fi
+
+exit 0
